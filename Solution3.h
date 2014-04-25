@@ -31,7 +31,7 @@
 				}
 				std::map<Point,int>	mp;
 				int maxn = 0;
-				Point tpt;
+				int maxo = 0;
 				for(int i = 0;i < points.size(); ++i)
 				{
 					mp.clear();
@@ -42,9 +42,16 @@
 							continue;	
 						}
 						Point pt(points[j].x-points[i].x , points[j].y - points[i].y);
+						if(0 != pt.x || 0 != pt.y)
+						{	
+							mp[pt]++;
+						}
+						else
+						{
+							maxo++;	
+						}
 
 		//				cout<<"befor <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
-						mp[pt]++;
 						cout<<"after <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
 						if(maxn < mp[pt])
 						{
@@ -52,6 +59,10 @@
 							tpt = pt;
 						}
 					}
+				}
+				if(maxn < maxo)
+				{
+					maxn = maxo;
 				}
 				return maxn + 1;
 			}
