@@ -1,7 +1,10 @@
 #include <iostream>
 #include <cstdio>
+#include <cstring>
 #include <string>
 #include <vector>
+#include <stack>
+#include <cstdlib>
 
 using namespace std;
 
@@ -44,20 +47,12 @@ class Solution1 {
 				}
 			}
 		}
+
+	void OnGetLine(string & line)
+	{
+		reverseWords(line);
+		cout<<line<<endl;		
+	}
 };
 
 
-int main()
-{
-	Solution1 s1;
-	
-	char line[1024];
-	while(gets(line))
-	{
-		string s = line;
-		s1.reverseWords(s);
-		cout<<s<<endl;		
-	}
-	
-	return 0;	
-}
