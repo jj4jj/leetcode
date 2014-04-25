@@ -5,17 +5,22 @@
      Point() : x(0), y(0) {}
      Point(int a, int b) : x(a), y(b) {}
  };
- namespace std{
-	 template<>
-	 struct less<Point> 
-	 {
-		bool operator()(const Point & pt1,const Point & pt2)
-		{
-			return 	(pt1.x * pt2.y) < (pt1.y * pt2.x);
-		}	 
-	};
+
 	 
-	 };
+	  namespace std{
+			 template<>
+				 struct less<Point> 
+					 {
+								bool operator()(const Point & pt1,const Point & pt2)
+								{
+									//////////////////////////////////////////
+
+									bool b = (pt1.x * pt2.y) < (pt1.y * pt2.x);
+									return b;
+								}	 
+					};
+									 
+																			 };
 	class Solution3 {
 		public:
 			int maxPoints(vector<Point> &points) {
@@ -25,20 +30,30 @@
 					return points.size();	
 				}
 				std::map<Point,int>	mp;
-				int maxn = 2;
+				int maxn = 0;
+				Point tpt;
 				for(int i = 0;i < points.size(); ++i)
 				{
-					for(int j = i; j < points.size(); ++j)
+					mp.clear();
+					for(int j = 0; j < points.size(); ++j)
 					{
+						if(i == j)
+						{
+							continue;	
+						}
 						Point pt(points[j].x-points[i].x , points[j].y - points[i].y);
+
+		//				cout<<"befor <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
 						mp[pt]++;
+						cout<<"after <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
 						if(maxn < mp[pt])
 						{
 							maxn = mp[pt];
+							tpt = pt;
 						}
 					}
 				}
-				return maxn;
+				return maxn + 1;
 			}
 			void OnGetLine(string & line)
 			{
