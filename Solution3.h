@@ -4,6 +4,10 @@
      int y;
      Point() : x(0), y(0) {}
      Point(int a, int b) : x(a), y(b) {}
+     void print(const char* s) const
+	{
+		cout<<s<<":"<<x<<","<<y<<endl;
+	}
  };
 
 	 
@@ -30,52 +34,64 @@
 					return points.size();	
 				}
 				std::map<Point,int>	mp;
-				int maxn = 0;
-				int maxo = 0;
+				int maxn = 2;
 				for(int i = 0;i < points.size(); ++i)
 				{
 					mp.clear();
-					for(int j = 0; j < points.size(); ++j)
+					for(int j = i+1; j < points.size(); ++j)
 					{
-						if(i == j)
-						{
-							continue;	
-						}
 						Point pt(points[j].x-points[i].x , points[j].y - points[i].y);
-						if(0 != pt.x || 0 != pt.y)
-						{	
+
+						/*
+						if(mp.find(pt) != mp.end())
+						{
 							mp[pt]++;
 						}
 						else
 						{
-							maxo++;	
+							mp[pt] = 2;
 						}
-
-		//				cout<<"befor <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
-						cout<<"after <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
-						if(maxn < mp[pt])
+						*/
+						std::map<Point,int>::iterator it = mp.begin();
+						bool bFind = false;
+						while(it != mp.end())
 						{
-							maxn = mp[pt];
-							tpt = pt;
+							if(pt.x*it->first.y == pt.y*it->first.x)
+							{
+								it->first.print("inc");
+								it->second++;
+								bFind = true;
+								
+								if(maxn < it->second)
+								{
+									maxn = it->second;
+								}
+
+							}
+							++it;
+						}
+						if(false == bFind)
+						{
+							pt.print("add");
+							mp[pt] = 2;
 						}
 					}
 				}
-				if(maxn < maxo)
-				{
-					maxn = maxo;
-				}
-				return maxn + 1;
+				return maxn ;
 			}
 			void OnGetLine(string & line)
 			{
 				TokenNizer tn;
 				vector<string> lst = tn.Split(line," ");
+
 				vector<Point>	points;
-				for(int i = 0; i < lst.size(); i+=2)
+				for(int i = 0; i < lst.size() - 1; i+=2)
 				 {
+					cout<<"----------"<<i<<endl;
 					Point pt(std::atoi(lst[i].c_str()),std::atoi(lst[i+1].c_str())); 
 					points.push_back(pt);	
 				}
+
 				cout<<maxPoints(points)<<endl;	
 			}
 	};
