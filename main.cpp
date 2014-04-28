@@ -17,6 +17,15 @@ int main()
 #ifdef S3
 	Solution3 s;
 #endif
+#ifdef S4
+	Solution4 s;
+#endif
+#ifdef S5
+	Solution5 s;
+#endif
+#ifdef S6
+	Solution6 s;
+#endif
 	char line[1024];
 	while(gets(line))
 	{
