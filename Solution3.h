@@ -6,21 +6,6 @@
      Point(int a, int b) : x(a), y(b) {}
  };
 
-	 
-	  namespace std{
-			 template<>
-				 struct less<Point> 
-					 {
-								bool operator()(const Point & pt1,const Point & pt2)
-								{
-									//////////////////////////////////////////
-
-									bool b = (pt1.x * pt2.y) < (pt1.y * pt2.x);
-									return b;
-								}	 
-					};
-									 
-																			 };
 	class Solution3 {
 		public:
 			int maxPoints(vector<Point> &points) {
@@ -29,31 +14,37 @@
 				{
 					return points.size();	
 				}
-				std::map<Point,int>	mp;
-				int maxn = 0;
-				Point tpt;
+				std::vector<std::pair<Point,int> >	mp;
+				int maxn = 2;
 				for(int i = 0;i < points.size(); ++i)
 				{
-					mp.clear();
-					for(int j = 0; j < points.size(); ++j)
-					{
-						if(i == j)
-						{
-							continue;	
-						}
-						Point pt(points[j].x-points[i].x , points[j].y - points[i].y);
 
-		//				cout<<"befor <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
-						mp[pt]++;
-						cout<<"after <"<<points[i].x<<","<<points[i].y<<"> ----> <"<<points[j].x<<","<<points[j].y<<"> | <"<<pt.x<<","<<pt.y<<">:"<<mp[pt]<<endl;
-						if(maxn < mp[pt])
+					mp.clear();
+					for(int j = i+1; j < points.size(); ++j)
+					{
+						Point pt(points[j].x-points[i].x , points[j].y - points[i].y);
+						std::vector<std::pair<Point,int> >::iterator it = mp.begin();
+						bool bFind = false;
+						while(it != mp.end())
 						{
-							maxn = mp[pt];
-							tpt = pt;
+							if(pt.x*(it->first.y) == pt.y*(it->first.x))
+							{
+								it->second++;	
+								if(maxn < it->second)
+								{
+									maxn = it->second;
+								}
+								bFind = true;
+							}
+							it++;	
+						}
+						if(false == bFind)
+						{
+							mp.push_back(std::make_pair(pt,2));
 						}
 					}
 				}
-				return maxn + 1;
+				return maxn;
 			}
 			void OnGetLine(string & line)
 			{
