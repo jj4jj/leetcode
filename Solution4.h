@@ -13,31 +13,25 @@ class Solution4 {
 				return ;	
 			}
 			ListNode* p = pHead;
-			cout<<"quick sort sub list :"<<endl;
-			while(p != pTail)
-			{
-				cout<<p->val<<" ";
-				p = p->next;	
-			}
-			cout<<endl;
-			p = pHead;
 			ListNode* pPivot = pHead;
-			cout<<"pivot :"<<pPivot->val<<endl;
-			while(p->next && p->next != pTail )
+			while(p != pTail )
 			{
-				if(p->next->val < pPivot->val)
+				if(p->val < pPivot->val)
 				{
-					cout<<"val:"<<p->next->val<<" swap insert into head "<<endl;
-					ListNode* t = p->next->next;
-					//delete p->next and insert into list head
-					p->next->next = pHead;
-					pHead = p->next;
-					p->next = t; 
+					int t = p->val;
+					p->val = pPivot->val;
+					pPivot->val = t;
+					pPivot = pPivot->next;
+
+					if(pPivot != NULL)
+					{
+						t = p->val;
+						p->val = pPivot->val;
+						pPivot->val = t;
+					}
+
 				}
-				else
-				{
-					p = p->next;	
-				}
+				p = p->next;	
 			}
 			quickSort(pHead,pPivot);
 			quickSort(pPivot->next,pTail);
@@ -45,6 +39,7 @@ class Solution4 {
 		}
 		ListNode *sortList(ListNode *head) {
 			quickSort(head,NULL);
+			return head;
 		}
 		void OnGetLine(string & line)
 		{
@@ -62,21 +57,13 @@ class Solution4 {
 				pTail->next = pNode;
 				pTail = pNode;
 			}
-			ListNode* pNode = pHead;
-			while(pNode)
-			{
-				cout<<pNode->val<<" ";	
-				pNode = pNode->next;
-			}
-			cout<<endl;
 			sortList(pHead);
-			pNode = pHead;
-			while(pNode)
+			while(pHead)
 			{
-				cout<<pNode->val<<" ";	
-				pNode = pNode->next;
+				
+				cout<<pHead->val<<" ";
+				pHead = pHead->next;
 			}
-
 			cout<<endl;
 		}
 };
