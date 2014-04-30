@@ -12,10 +12,27 @@ class Solution4 {
 			{
 				return ;	
 			}
+			int len = 0;
 			ListNode* p = pHead;
+			while(p != pTail)
+			{
+				len++;
+				p = p->next;	
+			}
+			p = pHead;
 			ListNode* pPivot = pHead;
+			int irand = rand()%len;
+			while(irand--)
+			{
+				pPivot = pPivot->next;
+			}
+			bool after = false;
 			while(p != pTail )
 			{
+				if(p == pPivot)
+				{
+					after = true;	
+				}
 				if(p->val < pPivot->val)
 				{
 					int t = p->val;
