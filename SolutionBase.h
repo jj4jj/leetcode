@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <map>
 #include <algorithm>
+#include <math.h>
 using namespace std;
 
 

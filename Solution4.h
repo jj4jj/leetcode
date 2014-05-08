@@ -6,12 +6,57 @@ struct ListNode {
 };
 class Solution4 {
 	public:
-		ListNode *sortList(ListNode *head) {
+		void quickSort(ListNode* pHead, ListNode* pTail)
+		{
+			if(pHead == pTail)
+			{
+				return ;	
+			}
+			int len = 0;
+			ListNode* p = pHead;
+			while(p != pTail)
+			{
+				len++;
+				p = p->next;	
+			}
+			p = pHead;
+			ListNode* pPivot = pHead;
+			int irand = rand()%len;
+			while(irand--)
+			{
+				pPivot = pPivot->next;
+			}
+			bool after = false;
+			while(p != pTail )
+			{
+				if(p == pPivot)
+				{
+					after = true;	
+				}
+				if(p->val < pPivot->val)
+				{
+					int t = p->val;
+					p->val = pPivot->val;
+					pPivot->val = t;
+					pPivot = pPivot->next;
 
-			LintNode* pSorted = head;
-			while(
+					if(pPivot != NULL)
+					{
+						t = p->val;
+						p->val = pPivot->val;
+						pPivot->val = t;
+					}
+
+				}
+				p = p->next;	
+			}
+			quickSort(pHead,pPivot);
+			quickSort(pPivot->next,pTail);
 			
-
+		}
+		ListNode *sortList(ListNode *head) {
+			quickSort(head,NULL);
+			return head;
 		}
 		void OnGetLine(string & line)
 		{
@@ -24,21 +69,18 @@ class Solution4 {
 				ListNode* pNode = new ListNode(std::atoi(lst[i].c_str()));
 				if(!pHead)
 				{
-					pHead = pTai = pNode;	
+					pHead = pTail = pNode;
 				}
 				pTail->next = pNode;
+				pTail = pNode;
 			}
 			sortList(pHead);
-			pNode = pHead;
-			while(pNode)
+			while(pHead)
 			{
-				cout<<pNode->val<<" ";	
-				pNode = pNode->next;
+				
+				cout<<pHead->val<<" ";
+				pHead = pHead->next;
 			}
 			cout<<endl;
-
 		}
-
-		points.push_back(pt)[[]
-			]
 };
