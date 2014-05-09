@@ -38,8 +38,8 @@
 							//y2-kx2 = y1 - kx1 -> y2 - y1 = k(x2 - x1)
 							//y1,x1 -> first
 							//y2,x2 -> points j
-							if(pt.x*(it->first.y) == pt.y*(it->first.x) &&
-							   (points[j].y - it->first.y)*pt.x == (points[j].x - it->first.x)*pt.y )
+							if(pt.x*(it->first.slope.y) == pt.y*(it->first.slope.x) &&
+							   (points[j].y - it->first.p0.y)*pt.x == (points[j].x - it->first.p0.x)*pt.y )
 							{
 								it->second++;	
 								if(maxn < it->second)
@@ -52,7 +52,7 @@
 						}
 						if(false == bFind)
 						{
-							mp.push_back(std::make_pair(pt,2));
+							mp.push_back(std::make_pair(Line(pt,points[i]),2));
 						}
 					}
 				}

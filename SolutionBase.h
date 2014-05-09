@@ -37,6 +37,7 @@ public:
 			lst.push_back(string(pStart));	
 		}
 		cout<<endl;
+		cout<<"split ok list len = "<<lst.size()<<endl;
 		return lst;
 	}
 	
