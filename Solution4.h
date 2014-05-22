@@ -6,56 +6,45 @@ struct ListNode {
 };
 class Solution4 {
 	public:
-		void quickSort(ListNode* pHead, ListNode* pTail)
+		void	mergeSort(ListNode * head)
 		{
-			if(pHead == pTail)
+			if(!head || !(head->next))
 			{
-				return ;	
+				return;	
 			}
-			int len = 0;
-			ListNode* p = pHead;
-			while(p != pTail)
+			if(head->val > head->next->val)
 			{
-				len++;
-				p = p->next;	
-			}
-			p = pHead;
-			ListNode* pPivot = pHead;
-			int irand = rand()%len;
-			while(irand--)
-			{
-				pPivot = pPivot->next;
-			}
-			bool after = false;
-			while(p != pTail )
-			{
-				if(p == pPivot)
-				{
-					after = true;	
-				}
-				if(p->val < pPivot->val)
-				{
-					int t = p->val;
-					p->val = pPivot->val;
-					pPivot->val = t;
-					pPivot = pPivot->next;
 
-					if(pPivot != NULL)
-					{
-						t = p->val;
-						p->val = pPivot->val;
-						pPivot->val = t;
-					}
-
-				}
-				p = p->next;	
+				cout<<"swap:"<<head->val<<","<<head->next->val<<endl;
+				int v = head->val;
+				head->val = head->next->val;
+				head->next->val = v;	
 			}
-			quickSort(pHead,pPivot);
-			quickSort(pPivot->next,pTail);
-			
+			ListNode* pNewLink = head->next->next;
+			mergeSort(pNewLink);
+			while(pNewLink)
+			{
+				if(head == pNewLink)
+				{
+					pNewLink = pNewLink->next;	
+					continue;
+				}
+				if(head->val > pNewLink->val)
+				{
+					cout<<"swap:"<<head->val<<","<<pNewLink->val<<endl;
+					int v = head->val;
+					head->val = pNewLink->val;
+					pNewLink->val = v;	
+					head = head->next;
+				}
+				else
+				{
+					pNewLink = pNewLink->next;	
+				}
+			}
 		}
 		ListNode *sortList(ListNode *head) {
-			quickSort(head,NULL);
+			mergeSort(head);
 			return head;
 		}
 		void OnGetLine(string & line)
