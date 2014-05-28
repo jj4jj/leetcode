@@ -6,46 +6,84 @@ struct ListNode {
 };
 class Solution4 {
 	public:
-		void	mergeSort(ListNode * head)
+		ListNode * mergeSort(ListNode * head)
 		{
-			if(!head || !(head->next))
+			ListNode* p = head;
+			int n  = 0;
+			while(p)
 			{
-				return;	
+				++n;
+				p=p->next;	
 			}
-			if(head->val > head->next->val)
+			if(!head || n < 2)
 			{
-
-				cout<<"swap:"<<head->val<<","<<head->next->val<<endl;
-				int v = head->val;
-				head->val = head->next->val;
-				head->next->val = v;	
+				return head;	
 			}
-			ListNode* pNewLink = head->next->next;
-			mergeSort(pNewLink);
-			while(pNewLink)
+			if(n == 2 )
 			{
-				if(head == pNewLink)
+				if(head->val > head->next->val)
 				{
-					pNewLink = pNewLink->next;	
-					continue;
+					int t = head->val;
+					head->val = head->next->val;
+					head->next->val = t;	
 				}
-				if(head->val > pNewLink->val)
+				return head;	
+			}
+			ListNode* pHead2nd = head;
+			int i = 0;
+			while((i < n/2) && pHead2nd)
+			{
+				++i;
+				p = pHead2nd;
+				pHead2nd = pHead2nd->next;	
+			}
+			p->next = NULL;
+			head = mergeSort(head);
+			pHead2nd = mergeSort(pHead2nd);
+			///////////////////////////////
+			//merge head and middle
+			ListNode * pTail = NULL, *pHead = NULL;
+			while(head != NULL && pHead2nd != NULL)
+			{
+				if(head->val > pHead2nd->val)
 				{
-					cout<<"swap:"<<head->val<<","<<pNewLink->val<<endl;
-					int v = head->val;
-					head->val = pNewLink->val;
-					pNewLink->val = v;	
-					head = head->next;
+					if(NULL == pHead)
+					{
+						pHead = pHead2nd;	
+					}
+					if(pTail)
+					{
+						pTail->next = pHead2nd;
+					}
+					pTail = pHead2nd;
+					p = pHead2nd->next;
+					pHead2nd->next = head;
+					pHead2nd = p;
+
 				}
 				else
 				{
-					pNewLink = pNewLink->next;	
+					if(NULL == pHead)
+					{
+						pHead = head;	
+					}
+					pTail = head;
+					head = head->next;	
 				}
 			}
+			if(!head && pHead2nd)
+			{
+				pTail->next = pHead2nd;
+			}
+			if( !pHead2nd && head)
+			{
+				pTail->next = head;
+			}
+			return pHead;
 		}
 		ListNode *sortList(ListNode *head) {
-			mergeSort(head);
-			return head;
+			
+			return mergeSort(head);
 		}
 		void OnGetLine(string & line)
 		{
@@ -63,7 +101,7 @@ class Solution4 {
 				pTail->next = pNode;
 				pTail = pNode;
 			}
-			sortList(pHead);
+			pHead = sortList(pHead);
 			while(pHead)
 			{
 				
