@@ -1,57 +1,51 @@
 
+#include "list"
+#include "iterator"
+#include "map"
+using namespace std;
 class LRUCache{
 	public:
-		typedef std::map<int,int>	KV;
-		typedef std::map<int,int > KA;
-		typedef KV::iterator KVItr;
-		KV kv;
-		KA ka;
+		typedef std::list<std::pair<int,int> > KL;
+		typedef KL::iterator KLItr;
+		typedef std::map<int,KLItr> KM;
+		typedef KM::iterator KMItr;
+		KM	km;
+		KL kl;
 		int n;
-		int epoch;
 		LRUCache(int capacity) {
 			n = capacity;
-			epoch = 0;
-			kv.clear();
-			ka.clear();
 		}
 
 		int get(int key) {
-			KVItr it = kv.find(key);
-			if(it == kv.end())
+			KMItr it = km.find(key);
+			if(it!=km.end())
 			{
-				return -1;	
+				int v = it->second->second;	
+				kl.erase(it->second);
+				kl.push_front(make_pair(key,v));
+				it->second = kl.begin();
+				return v;
 			}
-			ka[key] = epoch++;
-			return it->second;
+			return -1;
 		}
 
 		void set(int key, int value) {
-			KVItr it = kv.find(k);
-			if(it == kv.end() &&
-			  kv.size() >= n)
+			KMItr it = km.find(key);
+			if(it == km.end())
 			{
-				it = kv.begin();
-				int iMin = 0xFFFFFFFF;
-				KVItr t = kv.begin();
-				while(it != kv.end())
+				if(kl.size() >= n)
 				{
-					if(*it < iMin)
-					{
-						iMin = *it;
-						t = it;
-					}
+					km.erase(kl.back().first);	
+					kl.pop_back();
 				}
-				ka.erase(t->first);
-				kv.erase(t);
+				kl.push_front(make_pair(key,value));
 			}
-			kv[key]=value;
-			ka[key]=epoch++;
-		}
-		void OnGetLine(string & line)
-		{
-			reverseWords(line);
-			cout<<line<<endl;		
+			else
+			{
+				kl.push_front(*(it->second));
+				kl.erase(it->second);	
+			}
+			km[key]=kl.begin();
 		}
 };
-
 
